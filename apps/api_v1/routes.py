@@ -1,0 +1,26 @@
+"""
+    FastAPI V1 Route module
+
+    Description:
+    - This module is used to create v1 routes for application.
+
+"""
+
+# Importing Python Packages
+
+# Importing FastAPI Packages
+from fastapi import APIRouter
+
+# Importing Project Files
+from .role import role_router
+
+
+# Router Object to Create Routes
+router = APIRouter(prefix="/v1")
+
+
+# -----------------------------------------------------------------------------
+
+
+# Include all file routes
+router.include_router(role_router)
