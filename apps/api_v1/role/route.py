@@ -47,7 +47,7 @@ async def create_role(
     db_session: AsyncSession = Depends(get_session),
 ) -> RoleReadSchema:
     """
-    Create a single role.
+    Create a single role
 
     Description:
     - This route is used to create a single role.
@@ -55,7 +55,7 @@ async def create_role(
     Parameter:
     Role details to be created with following fields:
     - **role_name** (STR): Name of role. **(Required)**
-    - **role_description** (STR): Description of role. **(Required)**
+    - **role_description** (STR): Description of role. **(Optional)**
 
     Return:
     Role details along with following information:
@@ -87,7 +87,7 @@ async def get_role_by_id(
     db_session: AsyncSession = Depends(get_session),
 ) -> RoleReadSchema:
     """
-    Get a single role.
+    Get a single role
 
     Description:
     - This route is used to get a single role by providing id.
@@ -131,7 +131,7 @@ async def get_role_by_name(
     db_session: AsyncSession = Depends(get_session),
 ) -> RoleReadSchema:
     """
-    Get a single role.
+    Get a single role
 
     Description:
     - This route is used to get a single role by providing name.
@@ -178,7 +178,7 @@ async def get_all_roles(
     db_session: AsyncSession = Depends(get_session),
 ) -> RolePaginationReadSchema:
     """
-    Get all roles.
+    Get all roles
 
     Description:
     - This route is used to get all roles.
@@ -218,7 +218,7 @@ async def update_role(
     db_session: AsyncSession = Depends(get_session),
 ) -> RoleReadSchema:
     """
-    Update a single role.
+    Update a single role
 
     Description:
     - This route is used to update a single role by providing id.
@@ -227,7 +227,7 @@ async def update_role(
     - **role_id** (INT): ID of role to be updated. **(Required)**
     Role details to be updated with following fields:
     - **role_name** (STR): Name of role. **(Required)**
-    - **role_description** (STR): Description of role. **(Required)**
+    - **role_description** (STR): Description of role. **(Optional)**
 
     Return:
     Role details along with following information:
@@ -266,7 +266,7 @@ async def partial_update_role(
     db_session: AsyncSession = Depends(get_session),
 ) -> RoleReadSchema:
     """
-    Partial update a single role.
+    Partial update a single role
 
     Description:
     - This route is used to partial update a single role by providing id.
@@ -313,7 +313,7 @@ async def delete_role(
     db_session: AsyncSession = Depends(get_session),
 ) -> None:
     """
-    Delete a single role.
+    Delete a single role
 
     Description:
     - This route is used to delete a single role by providing id.

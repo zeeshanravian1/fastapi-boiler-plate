@@ -28,7 +28,5 @@ class RoleTable(BaseTable):
 
     """
 
-    role_name: Mapped[str] = mapped_column(
-        String(2_55), unique=True, nullable=False
-    )
-    role_description: Mapped[str] = mapped_column(String(2_55), nullable=False)
+    role_name: Mapped[str] = mapped_column(String(2_55), unique=True)
+    role_description: Mapped[str] = mapped_column(String(2_55), nullable=True)

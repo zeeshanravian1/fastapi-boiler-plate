@@ -13,6 +13,7 @@ from fastapi import APIRouter
 
 # Importing Project Files
 from .role import role_router
+from .user import user_router
 
 
 # Router Object to Create Routes
@@ -24,3 +25,4 @@ router = APIRouter(prefix="/v1")
 
 # Include all file routes
 router.include_router(role_router)
+router.include_router(user_router)

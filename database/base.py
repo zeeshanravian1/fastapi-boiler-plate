@@ -32,10 +32,8 @@ class BaseTable(Base):
     __abstract__ = True
 
     id: Mapped[int] = mapped_column(primary_key=True)
-    created_at: Mapped[datetime] = mapped_column(server_default=now())
-    updated_at: Mapped[datetime] = mapped_column(
-        server_default=now(), onupdate=now()
-    )
+    created_at: Mapped[datetime] = mapped_column(default=now())
+    updated_at: Mapped[datetime] = mapped_column(default=now(), onupdate=now())
 
     @declared_attr
     def __tablename__(self) -> str:

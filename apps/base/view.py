@@ -65,10 +65,10 @@ class BaseView(
         self, db_session: AsyncSession, record: CreateSchema
     ) -> Model:
         """
-        Create Method
+        Create method
 
         Description:
-        - This method is responsible for creating a record.
+        - This method is responsible for creating a single record.
 
         Parameter:
         - **db_session** (Session): Database session. **(Required)**
@@ -93,7 +93,7 @@ class BaseView(
         Read Method
 
         Description:
-        - This method is responsible for reading a record by ID.
+        - This method is responsible for reading a single record by ID.
 
         Parameter:
         - **db_session** (Session): Database session. **(Required)**
@@ -117,7 +117,7 @@ class BaseView(
         Read Method
 
         Description:
-        - This method is responsible for reading a record by value.
+        - This method is responsible for reading a single record by value.
 
         Parameter:
         - **db_session** (Session): Database session. **(Required)**
@@ -203,7 +203,7 @@ class BaseView(
         Update Method
 
         Description:
-        - This method is responsible for updating a record.
+        - This method is responsible for updating a single record.
 
         Parameter:
         - **db_session** (Session): Database session. **(Required)**
@@ -232,7 +232,7 @@ class BaseView(
         Delete Method
 
         Description:
-        - This method is responsible for deleting a record.
+        - This method is responsible for deleting a single record.
 
         Parameter:
         - **db_session** (Session): Database session. **(Required)**

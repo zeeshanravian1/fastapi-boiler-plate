@@ -60,11 +60,6 @@ class RoleCreateSchema(RoleBaseSchema):
     role_name: str = Field(
         min_length=1, max_length=2_55, example=role_configuration.ROLE
     )
-    role_description: str = Field(
-        min_length=1,
-        max_length=2_55,
-        example=role_configuration.ROLE_DESCRIPTION,
-    )
 
 
 class RoleReadSchema(RoleCreateSchema, BaseReadSchema):
