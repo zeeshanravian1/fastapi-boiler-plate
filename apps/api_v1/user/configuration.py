@@ -7,6 +7,7 @@
 """
 
 # Importing Python Packages
+from enum import Enum
 
 # Importing FastAPI Packages
 
@@ -37,8 +38,22 @@ class UserConfiguration:
     COUNTRY: str = "Pakistan"
     POSTAL_CODE: str = "54000"
     ROLE_ID: int = 1
+    IS_ACTIVE: bool = True
     USER_COLUMN_USERNAME: str = "username"
     USER_COLUMN_EMAIL: str = "email"
+
+
+class UserTokenStatus(str, Enum):
+    """
+    User Token Status Enum
+
+    Description:
+    - This enum is used to define User token status.
+
+    """
+
+    LOGIN: str = "login"
+    LOGOUT: str = "logout"
 
 
 user_configuration = UserConfiguration()

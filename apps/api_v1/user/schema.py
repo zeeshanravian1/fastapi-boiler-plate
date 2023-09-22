@@ -14,7 +14,7 @@ from pydantic_settings import SettingsConfigDict
 
 # Importing Project Files
 from apps.base import BaseReadSchema, BasePaginationReadSchema
-from .configuration import user_configuration
+from .configuration import user_configuration, UserTokenStatus
 from .helper import (
     names_validator,
     contact_validator,
@@ -173,6 +173,9 @@ class UserReadSchema(UserBaseSchema, BaseReadSchema):
 
     """
 
+    is_active: bool = Field(example=user_configuration.IS_ACTIVE)
+    token_status: str = Field(example=UserTokenStatus.LOGOUT)
+
 
 class UserPaginationReadSchema(BasePaginationReadSchema):
     """
@@ -219,6 +222,7 @@ class UserUpdateSchema(UserBaseSchema):
         ge=1,
         example=user_configuration.ROLE_ID,
     )
+    is_active: bool = Field(example=user_configuration.IS_ACTIVE)
 
 
 class UserPartialUpdateSchema(UserBaseSchema):
@@ -229,6 +233,10 @@ class UserPartialUpdateSchema(UserBaseSchema):
     - This schema is used to validate user update data passed to API.
 
     """
+
+    is_active: bool | None = Field(
+        default=None, example=user_configuration.IS_ACTIVE
+    )
 
 
 class PasswordChangeSchema(BaseModel):

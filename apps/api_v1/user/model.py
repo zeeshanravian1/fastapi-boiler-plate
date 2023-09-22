@@ -7,13 +7,15 @@
 """
 
 # Importing Python Packages
-from sqlalchemy import Boolean, String, ForeignKey
+from sqlalchemy import Boolean, Enum, ForeignKey, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 # Importing FastAPI Packages
 
 # Importing Project Files
 from database import BaseTable
+from core.configuration import core_configuration
+from .configuration import UserTokenStatus
 from ..role.model import RoleTable
 
 
@@ -48,4 +50,8 @@ class UserTable(BaseTable):
     password_otp: Mapped[str] = mapped_column(String(2_55), nullable=True)
     password_verified: Mapped[bool] = mapped_column(Boolean, nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=False)
+    token_status: Mapped[str] = mapped_column(
+        Enum(UserTokenStatus, schema=core_configuration.DB_SCHEMA),
+        default=UserTokenStatus.LOGOUT,
+    )
     role_id: Mapped[int] = mapped_column(ForeignKey(RoleTable.id))

@@ -46,8 +46,7 @@ router = APIRouter(prefix="/user", tags=["User"])
 )
 async def create_user(
     record: UserCreateSchema, db_session: AsyncSession = Depends(get_session)
-):
-    # ) -> UserReadSchema:
+) -> UserReadSchema:
     """
     Create a single user
 
@@ -83,6 +82,8 @@ async def create_user(
     - **country** (STR): Country of user.
     - **postal_code** (STR): Postal code of user.
     - **role_id** (INT): Role ID of user.
+    - **is_active** (BOOL): Status of user.
+    - **token_status** (STR): Token status of user.
     - **created_at** (DATETIME): Datetime of user creation.
     - **updated_at** (DATETIME): Datetime of user updation.
 
@@ -130,6 +131,8 @@ async def get_user_by_id(
     - **country** (STR): Country of user.
     - **postal_code** (STR): Postal code of user.
     - **role_id** (INT): Role ID of user.
+    - **is_active** (BOOL): Status of user.
+    - **token_status** (STR): Token status of user.
     - **created_at** (DATETIME): Datetime of user creation.
     - **updated_at** (DATETIME): Datetime of user updation.
 
@@ -183,6 +186,8 @@ async def get_user_by_username(
     - **country** (STR): Country of user.
     - **postal_code** (STR): Postal code of user.
     - **role_id** (INT): Role ID of user.
+    - **is_active** (BOOL): Status of user.
+    - **token_status** (STR): Token status of user.
     - **created_at** (DATETIME): Datetime of user creation.
     - **updated_at** (DATETIME): Datetime of user updation.
 
@@ -238,6 +243,8 @@ async def get_user_by_email(
     - **country** (STR): Country of user.
     - **postal_code** (STR): Postal code of user.
     - **role_id** (INT): Role ID of user.
+    - **is_active** (BOOL): Status of user.
+    - **token_status** (STR): Token status of user.
     - **created_at** (DATETIME): Datetime of user creation.
     - **updated_at** (DATETIME): Datetime of user updation.
 
@@ -295,6 +302,8 @@ async def get_all_users(
     - **country** (STR): Country of user.
     - **postal_code** (STR): Postal code of user.
     - **role_id** (INT): Role ID of user.
+    - **is_active** (BOOL): Status of user.
+    - **token_status** (STR): Token status of user.
     - **created_at** (DATETIME): Datetime of user creation.
     - **updated_at** (DATETIME): Datetime of user updation.
 
@@ -341,6 +350,7 @@ async def update_user(
     - **country** (STR): Country of user. **(Optional)**
     - **postal_code** (STR): Postal code of user. **(Optional)**
     - **role_id** (INT): Role ID of user. **(Required)**
+    - **is_active** (BOOL): Status of user. **(Required)**
 
     Return:
     User details along with following information:
@@ -356,6 +366,8 @@ async def update_user(
     - **country** (STR): Country of user.
     - **postal_code** (STR): Postal code of user.
     - **role_id** (INT): Role ID of user.
+    - **is_active** (BOOL): Status of user.
+    - **token_status** (STR): Token status of user.
     - **created_at** (DATETIME): Datetime of user creation.
     - **updated_at** (DATETIME): Datetime of user updation.
 
@@ -408,6 +420,7 @@ async def partial_update_user(
     - **country** (STR): Country of user. **(Optional)**
     - **postal_code** (STR): Postal code of user. **(Optional)**
     - **role_id** (INT): Role ID of user. **(Optional)**
+    - **is_active** (BOOL): Status of user. **(Optional)**
 
     Return:
     User details along with following information:
@@ -423,6 +436,8 @@ async def partial_update_user(
     - **country** (STR): Country of user.
     - **postal_code** (STR): Postal code of user.
     - **role_id** (INT): Role ID of user.
+    - **is_active** (BOOL): Status of user.
+    - **token_status** (STR): Token status of user.
     - **created_at** (DATETIME): Datetime of user creation.
     - **updated_at** (DATETIME): Datetime of user updation.
 
