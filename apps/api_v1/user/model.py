@@ -8,7 +8,7 @@
 
 # Importing Python Packages
 from sqlalchemy import Boolean, Enum, ForeignKey, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 # Importing FastAPI Packages
 
@@ -17,6 +17,7 @@ from database import BaseTable
 from core.configuration import core_configuration
 from .configuration import UserTokenStatus
 from ..role.model import RoleTable
+from ..organization.model import OrganizationTable
 
 
 # -----------------------------------------------------------------------------
@@ -55,3 +56,14 @@ class UserTable(BaseTable):
         default=UserTokenStatus.LOGOUT,
     )
     role_id: Mapped[int] = mapped_column(ForeignKey(RoleTable.id))
+    organization_id: Mapped[int | None] = mapped_column(
+        ForeignKey(OrganizationTable.id)
+    )
+
+    # Relationship
+    user_role: Mapped[RoleTable] = relationship(
+        back_populates="role_user", lazy="joined"
+    )
+    user_organization: Mapped[OrganizationTable | None] = relationship(
+        back_populates="organization_user", lazy="joined"
+    )

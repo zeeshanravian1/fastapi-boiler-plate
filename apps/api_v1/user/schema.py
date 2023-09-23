@@ -174,7 +174,7 @@ class UserReadSchema(UserBaseSchema, BaseReadSchema):
     """
 
     is_active: bool = Field(example=user_configuration.IS_ACTIVE)
-    token_status: str = Field(example=UserTokenStatus.LOGOUT)
+    token_status: UserTokenStatus = Field(example=UserTokenStatus.LOGOUT)
 
 
 class UserPaginationReadSchema(BasePaginationReadSchema):

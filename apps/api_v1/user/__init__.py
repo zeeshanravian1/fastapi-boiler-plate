@@ -2,7 +2,7 @@
     User Module
 
     Description:
-    - This module contains user configuration.
+    - This module contains user routes.
 
 """
 

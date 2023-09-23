@@ -22,7 +22,7 @@ class UserConfiguration:
     User Settings Class
 
     Description:
-    - This class is used to define User configurations.
+    - This class is used to define user configurations.
 
     """
 

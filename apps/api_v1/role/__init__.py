@@ -2,7 +2,7 @@
     Role Module
 
     Description:
-    - This module contains role configuration.
+    - This module contains role routes.
 
 """
 

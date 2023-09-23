@@ -51,7 +51,7 @@ class BasePaginationReadSchema(BaseModel):
     total_records: int = Field(ge=0, example=base_configuration.TOTAL_RECORDS)
     total_pages: int = Field(ge=0, example=base_configuration.TOTAL_PAGES)
     page: int = Field(ge=1, example=base_configuration.PAGE)
-    limit: int = Field(ge=1, example=base_configuration.LIMIT)
+    limit: int = Field(ge=0, example=base_configuration.LIMIT)
     records: list = Field(example=[])
 
     # Settings Configuration
