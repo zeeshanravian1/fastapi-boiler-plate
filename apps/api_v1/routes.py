@@ -12,9 +12,9 @@
 from fastapi import APIRouter
 
 # Importing Project Files
-from .organization import organization_router
-from .role import role_router
-from .user import user_router
+from .organization.route import router as organization_router
+from .role.route import router as role_router
+from .user.route import router as user_router
 
 
 # Router Object to Create Routes

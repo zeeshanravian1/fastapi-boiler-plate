@@ -74,35 +74,24 @@ async def exception_handling(request: Request, call_next):
         err_message = re.sub(r"in table.*", "", err_message).strip()
 
         if err.orig.pgcode == "23502":
-            return JSONResponse(
-                status_code=status.HTTP_409_CONFLICT,
-                content={
-                    "detail": core_response_message.NOT_NULL_VIOLATION
-                    + str(err_message)
-                },
+            detail = core_response_message.NOT_NULL_VIOLATION + str(
+                err_message
             )
 
-        if err.orig.pgcode == "23503":
-            return JSONResponse(
-                status_code=status.HTTP_409_CONFLICT,
-                content={
-                    "detail": core_response_message.FOREIGN_KEY_VIOLATION
-                    + str(err_message)
-                },
+        elif err.orig.pgcode == "23503":
+            detail = core_response_message.FOREIGN_KEY_VIOLATION + str(
+                err_message
             )
 
-        if err.orig.pgcode == "23505":
-            return JSONResponse(
-                status_code=status.HTTP_409_CONFLICT,
-                content={
-                    "detail": core_response_message.UNIQUE_VIOLATION
-                    + str(err_message)
-                },
-            )
+        elif err.orig.pgcode == "23505":
+            detail = core_response_message.UNIQUE_VIOLATION + str(err_message)
+
+        else:
+            detail = core_response_message.INTEGRITY_ERROR
 
         return JSONResponse(
             status_code=status.HTTP_409_CONFLICT,
-            content={"detail": core_response_message.INTEGRITY_ERROR},
+            content={"detail": detail},
         )
 
     except ResponseValidationError as err:

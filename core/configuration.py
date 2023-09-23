@@ -8,6 +8,7 @@
 """
 
 # Importing Python Packages
+from enum import Enum
 import secrets
 from pydantic import PostgresDsn, validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -61,7 +62,8 @@ class CoreConfiguration(BaseSettings):
 
     # JWT Configuration
 
-    SECRET_KEY: str = secrets.token_urlsafe(32)
+    ACCESS_TOKEN_SECRET_KEY: str = secrets.token_urlsafe(32)
+    REFRESH_TOKEN_SECRET_KEY: str = secrets.token_urlsafe(32)
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 1 day
     REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
@@ -89,6 +91,19 @@ class CoreConfiguration(BaseSettings):
 
     # Settings Configuration
     model_config = SettingsConfigDict(env_file=".env")
+
+
+class TokenType(str, Enum):
+    """
+    Token Type Enum
+
+    Description:
+    - This enum is used to define token type.
+
+    """
+
+    ACCESS_TOKEN: str = "access_token"
+    REFRESH_TOKEN: str = "refresh_token"
 
 
 core_configuration = CoreConfiguration()

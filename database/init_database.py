@@ -35,6 +35,7 @@ async def insert_db_data(db_session: async_sessionmaker[AsyncSession]) -> None:
 
     Parameter:
     - **db_session** (async_sessionmaker[AsyncSession]): Database session.
+    **(Required)**
 
     Return:
     - **None**

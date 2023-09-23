@@ -17,6 +17,7 @@ from fastapi.responses import JSONResponse
 
 # Importing Project Files
 from database import get_session
+from core import CurrentUserReadSchema, get_current_active_user
 from .configuration import user_configuration
 from .response_message import user_response_message
 from .model import UserTable
@@ -45,7 +46,9 @@ router = APIRouter(prefix="/user", tags=["User"])
     response_description="User created successfully",
 )
 async def create_user(
-    record: UserCreateSchema, db_session: AsyncSession = Depends(get_session)
+    record: UserCreateSchema,
+    db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> UserReadSchema:
     """
     Create a single user
@@ -107,6 +110,7 @@ async def create_user(
 async def get_user_by_id(
     user_id: int,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> UserReadSchema:
     """
     Get a single user
@@ -162,6 +166,7 @@ async def get_user_by_id(
 async def get_user_by_username(
     username: str,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> UserReadSchema:
     """
     Get a single user
@@ -219,6 +224,7 @@ async def get_user_by_username(
 async def get_user_by_email(
     email: EmailStr,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> UserReadSchema:
     """
     Get a single user
@@ -277,6 +283,7 @@ async def get_all_users(
     page: int | None = None,
     limit: int | None = None,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> UserPaginationReadSchema:
     """
     Get all users
@@ -328,6 +335,7 @@ async def update_user(
     user_id: int,
     record: UserUpdateSchema,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> UserReadSchema:
     """
     Update a single user
@@ -398,6 +406,7 @@ async def partial_update_user(
     user_id: int,
     record: UserPartialUpdateSchema,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> UserReadSchema:
     """
     Partial update a single user
@@ -467,6 +476,7 @@ async def partial_update_user(
 async def delete_user(
     user_id: int,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> None:
     """
     Delete a single user
@@ -505,6 +515,7 @@ async def change_password(
     user_id: int,
     record: PasswordChangeSchema,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> dict:
     """
     Change password of a single user

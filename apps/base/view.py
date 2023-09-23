@@ -155,7 +155,7 @@ class BaseView(
         - **limit** (int): Limit number. **(Optional)**
 
         Return:
-        - **records** (Dict): Pagination Read Schema.
+        - **records** (JSON): Pagination Read Schema.
 
         """
 

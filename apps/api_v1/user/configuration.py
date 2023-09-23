@@ -48,7 +48,7 @@ class UserTokenStatus(str, Enum):
     User Token Status Enum
 
     Description:
-    - This enum is used to define User token status.
+    - This enum is used to define user token status.
 
     """
 

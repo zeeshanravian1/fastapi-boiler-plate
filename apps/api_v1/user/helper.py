@@ -24,11 +24,11 @@ def names_validator(name: str) -> str:
     Description:
     - This method is used to validate name data passed to API.
 
-    Parameters:
-    - **name**: Name to be validated. (STR) *--Required*
+    Parameter:
+    - **name** (STR): Name to be validated. **(Required)**
 
-    Returns:
-    - **name**: Validated name with capitalized.
+    Return:
+    - **name** (STR): Validated name with capitalized.
 
     """
     print("Calling names_validator method")
@@ -49,11 +49,11 @@ def contact_validator(contact: str) -> str:
     Description:
     - This method is used to validate contact number passed to API.
 
-    Parameters:
-    - **contact**: Contact to be validated. (STR) *--Required*
+    Parameter:
+    - **contact** (STR): Contact to be validated. **(Required)**
 
-    Returns:
-    - **contact**: Validated contact.
+    Return:
+    - **contact** (STR): Validated contact.
 
     """
     print("Calling contact_validator method")
@@ -81,11 +81,11 @@ def username_validator(username: str) -> str:
     Description:
     - This method is used to validate username data passed to API.
 
-    Parameters:
-    - **username**: Username to be validated. (STR) *--Required*
+    Parameter:
+    - **username** (STR): Username to be validated. **(Required)**
 
-    Returns:
-    - **username**: Validated username with lowered.
+    Return:
+    - **username** (STR): Validated username with lowered.
 
     """
     print("Calling username_validator method")
@@ -106,11 +106,11 @@ def lowercase_email(email: str) -> str:
     Description:
     - This method is used to lowercase email passed to API.
 
-    Parameters:
-    - **email**: Email to be lowercased. (STR) *--Required*
+    Parameter:
+    - **email** (STR): Email to be lowercased. **(Required)**
 
-    Returns:
-    - **email**: Lowercased email.
+    Return:
+    - **email** (STR): Lowercased email.
 
     """
     print("Calling lowercase_email method")
@@ -125,11 +125,11 @@ def password_validator(password: str) -> str:
     Description:
     - This method is used to validate password data passed to API.
 
-    Parameters:
-    - **password**: Password to be validated. (STR) *--Required*
+    Parameter:
+    - **password** (STR): Password to be validated. **(Required)**
 
-    Returns:
-    - **password**: Validated password.
+    Return:
+    - **password** (STR): Validated password.
 
     """
     print("Calling password_validator method")

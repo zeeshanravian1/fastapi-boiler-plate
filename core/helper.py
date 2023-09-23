@@ -45,8 +45,8 @@ def assemble_db_connection(url: str | None, values: dict[str, any]) -> any:
     - This method is used to assemble database connection.
 
     Parameter:
-    - **url** (STR): Database url.  **(Optional)**
-    - **values** (DICT): Values of database configurations. **(Required)**
+    - **url** (STR): Database url. **(Optional)**
+    - **values** (JSON): Values of database configurations. **(Required)**
 
     Return:
     - **database_url** (PostgresDsn): Database url.

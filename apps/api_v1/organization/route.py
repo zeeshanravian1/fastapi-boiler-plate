@@ -16,6 +16,7 @@ from fastapi.responses import JSONResponse
 
 # Importing Project Files
 from database import get_session
+from core import CurrentUserReadSchema, get_current_active_user
 from .configuration import organization_configuration
 from .response_message import organization_response_message
 from .model import OrganizationTable
@@ -45,6 +46,7 @@ router = APIRouter(prefix="/organization", tags=["Organization"])
 async def create_organization(
     record: OrganizationCreateSchema,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> OrganizationReadSchema:
     """
     Create a single organization.
@@ -86,6 +88,7 @@ async def create_organization(
 async def get_organization_by_id(
     organization_id: int,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> OrganizationReadSchema:
     """
     Get a single organization.
@@ -133,6 +136,7 @@ async def get_organization_by_id(
 async def get_organization_by_name(
     organization_name: str,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> OrganizationReadSchema:
     """
     Get a single organization.
@@ -183,6 +187,7 @@ async def get_all_organizations(
     page: int | None = None,
     limit: int | None = None,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> OrganizationPaginationReadSchema:
     """
     Get all organizations.
@@ -223,6 +228,7 @@ async def update_organization(
     organization_id: int,
     record: OrganizationUpdateSchema,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> OrganizationReadSchema:
     """
     Update a single organization.
@@ -275,6 +281,7 @@ async def partial_update_organization(
     organization_id: int,
     record: OrganizationPartialUpdateSchema,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> OrganizationReadSchema:
     """
     Partial update a single organization.
@@ -327,6 +334,7 @@ async def partial_update_organization(
 async def delete_organization(
     organization_id: int,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> None:
     """
     Delete a single organization.

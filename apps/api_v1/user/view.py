@@ -96,7 +96,7 @@ class UserView(
         - **record** (PasswordChangeSchema): Password change schema.
 
         Return:
-        - **None**
+        - **detail** (STR): Password changed successfully.
 
         """
 
@@ -113,7 +113,7 @@ class UserView(
         query: Update = (
             update(self.model)
             .where(self.model.id == record_id)
-            .values({"password": pbkdf2_sha256.hash(record.new_password)})
+            .values(password=pbkdf2_sha256.hash(record.new_password))
         )
         await db_session.execute(statement=query)
         await db_session.commit()

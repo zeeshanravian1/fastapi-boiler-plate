@@ -16,6 +16,7 @@ from fastapi.responses import JSONResponse
 
 # Importing Project Files
 from database.session import get_session
+from core import CurrentUserReadSchema, get_current_active_user
 from .configuration import role_configuration
 from .response_message import role_response_message
 from .model import RoleTable
@@ -45,6 +46,7 @@ router = APIRouter(prefix="/role", tags=["Role"])
 async def create_role(
     record: RoleCreateSchema,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> RoleReadSchema:
     """
     Create a single role
@@ -85,6 +87,7 @@ async def create_role(
 async def get_role_by_id(
     role_id: int,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> RoleReadSchema:
     """
     Get a single role
@@ -129,6 +132,7 @@ async def get_role_by_id(
 async def get_role_by_name(
     role_name: str,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> RoleReadSchema:
     """
     Get a single role
@@ -216,6 +220,7 @@ async def update_role(
     role_id: int,
     record: RoleUpdateSchema,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> RoleReadSchema:
     """
     Update a single role
@@ -264,6 +269,7 @@ async def partial_update_role(
     role_id: int,
     record: RolePartialUpdateSchema,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> RoleReadSchema:
     """
     Partial update a single role
@@ -311,6 +317,7 @@ async def partial_update_role(
 async def delete_role(
     role_id: int,
     db_session: AsyncSession = Depends(get_session),
+    current_user: CurrentUserReadSchema = Security(get_current_active_user),
 ) -> None:
     """
     Delete a single role
