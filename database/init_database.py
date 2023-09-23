@@ -7,12 +7,13 @@
 """
 
 # Importing Python Packages
+import logging
 from passlib.hash import pbkdf2_sha256
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from sqlalchemy.engine.result import ChunkedIteratorResult
 from sqlalchemy.sql.selectable import Select
-from sqlalchemy.exc import ProgrammingError
+from sqlalchemy.exc import IntegrityError, ProgrammingError
 
 # Importing FastAPI Packages
 
@@ -22,10 +23,12 @@ from apps.api_v1.user.model import UserTable
 from core import core_configuration
 
 
+insert_logger = logging.getLogger(__name__)
+
+
 # -----------------------------------------------------------------------------
 
 
-# Insert database data
 async def insert_db_data(db_session: async_sessionmaker[AsyncSession]) -> None:
     """
     Insert Database Data
@@ -41,38 +44,36 @@ async def insert_db_data(db_session: async_sessionmaker[AsyncSession]) -> None:
     - **None**
 
     """
-    print("Calling insert_db_data method")
+    insert_logger.debug("Calling insert_db_data method")
 
     # Insert Roles in database
+    roles = [
+        RoleTable(
+            role_name=core_configuration.SUPERUSER_ROLE,
+            role_description=core_configuration.SUPERUSER_ROLE_DESCRIPTION,
+        ),
+        RoleTable(
+            role_name="admin",
+            role_description="Admin Role Description",
+        ),
+        RoleTable(
+            role_name="manager",
+            role_description="Manager Role Description",
+        ),
+        RoleTable(
+            role_name="user",
+            role_description="User Role Description",
+        ),
+    ]
+
     try:
         async with db_session() as session:
             async with session.begin():
-                session.add_all(
-                    instances=[
-                        RoleTable(
-                            role_name=core_configuration.SUPERUSER_ROLE,
-                            role_description=core_configuration.SUPERUSER_ROLE_DESCRIPTION,
-                        ),
-                        RoleTable(
-                            role_name="admin",
-                            role_description="Admin Role Description",
-                        ),
-                        RoleTable(
-                            role_name="manager",
-                            role_description="Manager Role Description",
-                        ),
-                        RoleTable(
-                            role_name="user",
-                            role_description="User Role Description",
-                        ),
-                    ]
-                )
-
+                session.add_all(instances=roles)
                 await session.commit()
 
-    except ProgrammingError as err:
-        print("\n\n********* Error in insert roles in database *********\n\n")
-        print(err)
+    except (IntegrityError, ProgrammingError):
+        insert_logger.error("Error in insert roles in database", exc_info=True)
 
     # Insert Super Admin in database
     try:
@@ -111,6 +112,7 @@ async def insert_db_data(db_session: async_sessionmaker[AsyncSession]) -> None:
 
                 await session.commit()
 
-    except ProgrammingError as err:
-        print("\n\n****** Error in insert super admin in database ******\n\n")
-        print(err)
+    except (IntegrityError, ProgrammingError):
+        insert_logger.error(
+            "Error in insert super admin in database", exc_info=True
+        )
