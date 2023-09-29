@@ -28,6 +28,7 @@ class UserConfiguration:
 
     FIRST_NAME: str = "John"
     LAST_NAME: str = "Doe"
+    FULL_NAME: str = f"{FIRST_NAME} {LAST_NAME}"
     CONTACT: str = "(02) 123-4567"
     USERNAME: str = "johndoe"
     EMAIL: str = "johndoe@email.com"

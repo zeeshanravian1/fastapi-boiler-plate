@@ -30,12 +30,14 @@ from database import metadata, async_session, insert_db_data
 config = context.config
 
 # Set the database URL in the config object
-config.set_main_option("sqlalchemy.url", str(core_configuration.DATABASE_URL))
+config.set_main_option(
+    name="sqlalchemy.url", value=core_configuration.DATABASE_URL
+)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
 if config.config_file_name is not None:
-    fileConfig(config.config_file_name)
+    fileConfig(fname=config.config_file_name)
 
 # add your model's MetaData object here
 # for 'autogenerate' support
@@ -62,7 +64,7 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url: str = config.get_main_option("sqlalchemy.url")
+    url: str = config.get_main_option(name="sqlalchemy.url")
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -103,7 +105,9 @@ async def run_async_migrations() -> None:
     """
 
     connectable: AsyncEngine = async_engine_from_config(
-        configuration=config.get_section(config.config_ini_section, {}),
+        configuration=config.get_section(
+            name=config.config_ini_section, default={}
+        ),
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
@@ -120,7 +124,7 @@ def run_migrations_online() -> None:
 
     """
 
-    asyncio.run(run_async_migrations())
+    asyncio.run(main=run_async_migrations())
 
 
 if context.is_offline_mode():
@@ -129,4 +133,4 @@ else:
     run_migrations_online()
 
     # Create Initial Data in database
-    asyncio.run(insert_db_data(async_session))
+    asyncio.run(main=insert_db_data(async_session))

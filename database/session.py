@@ -19,7 +19,7 @@ from .connection import engine
 # -----------------------------------------------------------------------------
 
 
-async_session: AsyncSession = async_sessionmaker(
+async_session: async_sessionmaker[AsyncSession] = async_sessionmaker(
     bind=engine, expire_on_commit=False
 )
 

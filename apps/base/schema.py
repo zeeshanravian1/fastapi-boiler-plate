@@ -31,7 +31,7 @@ class BaseReadSchema(BaseModel):
 
     id: int = Field(example=base_configuration.ID)
     created_at: datetime = Field(example=base_configuration.CREATED_AT)
-    updated_at: datetime = Field(example=base_configuration.UPDATED_AT)
+    updated_at: datetime | None = Field(example=base_configuration.UPDATED_AT)
 
     # Settings Configuration
     model_config = SettingsConfigDict(

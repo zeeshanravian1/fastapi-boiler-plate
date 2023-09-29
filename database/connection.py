@@ -20,8 +20,6 @@ from core.configuration import core_configuration
 # -----------------------------------------------------------------------------
 
 
-engine: AsyncEngine = create_async_engine(
-    url=str(core_configuration.DATABASE_URL)
-)
+engine: AsyncEngine = create_async_engine(url=core_configuration.DATABASE_URL)
 metadata: MetaData = MetaData(schema=core_configuration.DB_SCHEMA)
 Base: DeclarativeBase = declarative_base(metadata=metadata)

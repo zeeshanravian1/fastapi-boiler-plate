@@ -12,7 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 # Importing FastAPI Packages
 from fastapi import APIRouter, Depends, Security, status
-from fastapi.responses import JSONResponse
+from fastapi.exceptions import HTTPException
 
 # Importing Project Files
 from database.session import get_session
@@ -114,9 +114,9 @@ async def get_role_by_id(
     )
 
     if not result:
-        return JSONResponse(
+        raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            content={"detail": role_response_message.ROLE_NOT_FOUND},
+            detail=role_response_message.ROLE_NOT_FOUND,
         )
 
     return RoleReadSchema.model_validate(obj=result)
@@ -161,9 +161,9 @@ async def get_role_by_name(
     )
 
     if not result:
-        return JSONResponse(
+        raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            content={"detail": role_response_message.ROLE_NOT_FOUND},
+            detail=role_response_message.ROLE_NOT_FOUND,
         )
 
     return RoleReadSchema.model_validate(obj=result)
@@ -250,9 +250,9 @@ async def update_role(
     )
 
     if not result:
-        return JSONResponse(
+        raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            content={"detail": role_response_message.ROLE_NOT_FOUND},
+            detail=role_response_message.ROLE_NOT_FOUND,
         )
 
     return RoleReadSchema.model_validate(obj=result)
@@ -299,9 +299,9 @@ async def partial_update_role(
     )
 
     if not result:
-        return JSONResponse(
+        raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            content={"detail": role_response_message.ROLE_NOT_FOUND},
+            detail=role_response_message.ROLE_NOT_FOUND,
         )
 
     return RoleReadSchema.model_validate(obj=result)
@@ -339,7 +339,7 @@ async def delete_role(
     )
 
     if not result:
-        return JSONResponse(
+        raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            content={"detail": role_response_message.ROLE_NOT_FOUND},
+            detail=role_response_message.ROLE_NOT_FOUND,
         )

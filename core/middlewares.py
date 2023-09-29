@@ -13,9 +13,9 @@ from jose import JWTError, ExpiredSignatureError
 from sqlalchemy.exc import IntegrityError
 
 # Importing FastAPI Packages
-from fastapi import HTTPException, Request, Response, status
+from fastapi import Request, Response, status
 from fastapi.responses import JSONResponse
-from fastapi.exceptions import ResponseValidationError
+from fastapi.exceptions import HTTPException, ResponseValidationError
 
 # Importing Project Files
 from .response_message import core_response_message
@@ -71,7 +71,9 @@ async def exception_handling(request: Request, call_next):
             .replace(")", "")
             .strip()
         )
-        err_message = re.sub(r"in table.*", "", err_message).strip()
+        err_message = re.sub(
+            pattern=r"in table.*", repl="", string=err_message
+        ).strip()
 
         if err.orig.pgcode == "23502":
             detail = core_response_message.NOT_NULL_VIOLATION + str(

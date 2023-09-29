@@ -38,11 +38,11 @@ app = FastAPI(
 # -----------------------------------------------------------------------------
 
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount(path="/static", app=StaticFiles(directory="static"), name="static")
 
 
 app.add_middleware(
-    CORSMiddleware,
+    middleware_class=CORSMiddleware,
     allow_credentials=True,
     allow_origins=[core_configuration.CORS_ALLOW_ORIGINS],
     allow_methods=[core_configuration.CORS_ALLOW_METHODS],
@@ -78,7 +78,7 @@ async def root():
 
     """
 
-    return {"message": f"Welcome to {core_configuration.PROJECT_TITLE}"}
+    return {"detail": f"Welcome to {core_configuration.PROJECT_TITLE}"}
 
 
 @app.get(
@@ -108,9 +108,9 @@ async def custom_swagger_ui_html():
     return get_swagger_ui_html(
         openapi_url=app.openapi_url,
         title=app.title + " - Swagger UI",
-        oauth2_redirect_url=app.swagger_ui_oauth2_redirect_url,
         swagger_js_url="/static/swagger-ui-bundle.js",
         swagger_css_url="/static/swagger-ui.css",
+        oauth2_redirect_url=app.swagger_ui_oauth2_redirect_url,
     )
 
 

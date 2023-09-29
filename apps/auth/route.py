@@ -13,7 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 # Importing FastAPI Packages
 from fastapi import APIRouter, Depends, Security, status
 from fastapi.security import OAuth2PasswordRequestForm
-from fastapi.responses import JSONResponse
+from fastapi.exceptions import HTTPException
 
 # Importing Project Files
 from database import get_session
@@ -104,9 +104,9 @@ async def register_admin_user(
             result.get("detail")
             == auth_response_message.ORGANIZATION_ALREADY_EXISTS
         ):
-            return JSONResponse(
+            raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                content={
+                detail={
                     "detail": auth_response_message.ORGANIZATION_ALREADY_EXISTS
                 },
             )
@@ -115,17 +115,17 @@ async def register_admin_user(
             result.get("detail")
             == auth_response_message.USERNAME_ALREADY_EXISTS
         ):
-            return JSONResponse(
+            raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                content={
+                detail={
                     "detail": auth_response_message.USERNAME_ALREADY_EXISTS
                 },
             )
 
         if result.get("detail") == auth_response_message.EMAIL_ALREADY_EXISTS:
-            return JSONResponse(
+            raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                content={"detail": auth_response_message.EMAIL_ALREADY_EXISTS},
+                detail={"detail": auth_response_message.EMAIL_ALREADY_EXISTS},
             )
 
     return RegisterAdminReadSchema.model_validate(obj=result)
@@ -165,15 +165,15 @@ async def login(
 
     if not isinstance(result, LoginReadSchema):
         if result.get("detail") == auth_response_message.USER_NOT_FOUND:
-            return JSONResponse(
+            raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                content={"detail": auth_response_message.USER_NOT_FOUND},
+                detail={"detail": auth_response_message.USER_NOT_FOUND},
             )
 
         if result.get("detail") == auth_response_message.INCORRECT_PASSWORD:
-            return JSONResponse(
+            raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                content={"detail": auth_response_message.INCORRECT_PASSWORD},
+                detail={"detail": auth_response_message.INCORRECT_PASSWORD},
             )
 
     return LoginReadSchema.model_validate(obj=result)
@@ -210,9 +210,9 @@ async def refresh_token(
     )
 
     if not isinstance(result, RefreshTokenReadSchema):
-        return JSONResponse(
+        raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            content={"detail": auth_response_message.USER_NOT_FOUND},
+            detail={"detail": auth_response_message.USER_NOT_FOUND},
         )
 
     return RefreshTokenReadSchema.model_validate(obj=result)
@@ -249,9 +249,9 @@ async def logout(
     )
 
     if result.get("detail") == auth_response_message.USER_NOT_FOUND:
-        return JSONResponse(
+        raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            content={"detail": auth_response_message.USER_NOT_FOUND},
+            detail={"detail": auth_response_message.USER_NOT_FOUND},
         )
 
     return {"detail": auth_response_message.USER_LOGGED_OUT}

@@ -10,13 +10,11 @@
 # Importing Python Packages
 from enum import Enum
 import secrets
-from pydantic import PostgresDsn, validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Importing FastAPI Packages
 
 # Importing Project Files
-from .helper import assemble_db_connection
 
 # -----------------------------------------------------------------------------
 
@@ -30,7 +28,7 @@ class CoreConfiguration(BaseSettings):
 
     """
 
-    # Database
+    # Database Configuration
 
     DATABASE: str
     DB_HOST: str
@@ -40,9 +38,30 @@ class CoreConfiguration(BaseSettings):
     DB_NAME: str
     DB_SCHEMA: str
 
-    DATABASE_URL: PostgresDsn = validator("DATABASE_URL", pre=True)(
-        assemble_db_connection
-    )
+    @property
+    def DATABASE_URL(self):  # pylint: disable=C0103
+        """
+        Database URL
+
+        Description:
+        - This property is used to generate database URL.
+
+        """
+        return "".join(
+            [
+                self.DATABASE,
+                "://",
+                self.DB_USER,
+                ":",
+                self.DB_PASSWORD,
+                "@",
+                self.DB_HOST,
+                ":",
+                str(self.DB_PORT),
+                "/",
+                self.DB_NAME,
+            ]
+        )
 
     # Project Configuration
 
@@ -68,7 +87,7 @@ class CoreConfiguration(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 1 day
     REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
 
-    # SUPER ADMIN CONFIGURATION
+    # Super Admin Configuration
 
     SUPERUSER_FIRST_NAME: str
     SUPERUSER_LAST_NAME: str
@@ -83,6 +102,17 @@ class CoreConfiguration(BaseSettings):
     SUPERUSER_POSTAL_CODE: str
     SUPERUSER_ROLE: str
     SUPERUSER_ROLE_DESCRIPTION: str
+
+    # Email Configuration
+
+    EMAIL_HOST: str
+    EMAIL_PORT: str
+    EMAIL_USERNAME: str
+    EMAIL_PASSWORD: str
+    EMAIL_FROM: str
+    EMAIL_FROM_NAME: str
+
+    COMPANY_NAME: str = "Test Company"
 
     # OPENAI
 

@@ -33,7 +33,7 @@ class BaseTable(Base):
 
     id: Mapped[int] = mapped_column(primary_key=True)
     created_at: Mapped[datetime] = mapped_column(default=now())
-    updated_at: Mapped[datetime] = mapped_column(default=now(), onupdate=now())
+    updated_at: Mapped[datetime] = mapped_column(nullable=True, onupdate=now())
 
     @declared_attr
     def __tablename__(self) -> str:

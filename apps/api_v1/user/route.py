@@ -13,7 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 # Importing FastAPI Packages
 from fastapi import APIRouter, Depends, Security, status
-from fastapi.responses import JSONResponse
+from fastapi.exceptions import HTTPException
 
 # Importing Project Files
 from database import get_session
@@ -148,9 +148,9 @@ async def get_user_by_id(
     )
 
     if not result:
-        return JSONResponse(
+        raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            content={"detail": user_response_message.USER_NOT_FOUND},
+            detail=user_response_message.USER_NOT_FOUND,
         )
 
     return UserReadSchema.model_validate(obj=result)
@@ -206,9 +206,9 @@ async def get_user_by_username(
     )
 
     if not result:
-        return JSONResponse(
+        raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            content={"detail": user_response_message.USER_NOT_FOUND},
+            detail=user_response_message.USER_NOT_FOUND,
         )
 
     return UserReadSchema.model_validate(obj=result)
@@ -264,9 +264,9 @@ async def get_user_by_email(
     )
 
     if not result:
-        return JSONResponse(
+        raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            content={"detail": user_response_message.USER_NOT_FOUND},
+            detail=user_response_message.USER_NOT_FOUND,
         )
 
     return UserReadSchema.model_validate(obj=result)
@@ -387,9 +387,9 @@ async def update_user(
     )
 
     if not result:
-        return JSONResponse(
+        raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            content={"detail": user_response_message.USER_NOT_FOUND},
+            detail=user_response_message.USER_NOT_FOUND,
         )
 
     return UserReadSchema.model_validate(obj=result)
@@ -458,9 +458,9 @@ async def partial_update_user(
     )
 
     if not result:
-        return JSONResponse(
+        raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            content={"detail": user_response_message.USER_NOT_FOUND},
+            detail=user_response_message.USER_NOT_FOUND,
         )
 
     return UserReadSchema.model_validate(obj=result)
@@ -498,9 +498,9 @@ async def delete_user(
     )
 
     if not result:
-        return JSONResponse(
+        raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            content={"detail": user_response_message.USER_NOT_FOUND},
+            detail=user_response_message.USER_NOT_FOUND,
         )
 
 
@@ -539,15 +539,15 @@ async def change_password(
     )
 
     if result.get("detail") == user_response_message.USER_NOT_FOUND:
-        return JSONResponse(
+        raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            content={"detail": user_response_message.USER_NOT_FOUND},
+            detail=user_response_message.USER_NOT_FOUND,
         )
 
     if result.get("detail") == user_response_message.INCORRECT_PASSWORD:
-        return JSONResponse(
+        raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            content={"detail": user_response_message.INCORRECT_PASSWORD},
+            detail=user_response_message.INCORRECT_PASSWORD,
         )
 
     return {"detail": user_response_message.PASSWORD_CHANGED}
