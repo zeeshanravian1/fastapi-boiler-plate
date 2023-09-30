@@ -27,8 +27,8 @@ class BaseConfiguration:
     """
 
     ID: int = 1
-    CREATED_AT: datetime = datetime.now()
-    UPDATED_AT: datetime = datetime.now()
+    CREATED_AT: datetime = datetime.utcnow()
+    UPDATED_AT: datetime = datetime.utcnow()
 
     TOTAL_RECORDS: int = 1
     TOTAL_PAGES: int = 1

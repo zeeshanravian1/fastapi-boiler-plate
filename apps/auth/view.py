@@ -9,11 +9,11 @@
 # Importing Python Packages
 from jose import jwt
 from passlib.hash import pbkdf2_sha256
-from sqlalchemy import select, update, or_
+from sqlalchemy import select, update, delete, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.engine.result import ChunkedIteratorResult
 from sqlalchemy.sql.selectable import Select
-from sqlalchemy.sql.dml import Update
+from sqlalchemy.sql.dml import Update, Delete
 
 # Importing FastAPI Packages
 from fastapi.security import OAuth2PasswordRequestForm
@@ -21,6 +21,10 @@ from fastapi.security import OAuth2PasswordRequestForm
 # Importing Project Files
 from core import TokenType, core_configuration, create_token
 from apps.base import BaseView
+from apps.email.configuration import email_configuration
+from apps.email.response_message import email_response_message
+from apps.email.schema import EmailBaseSchema
+from apps.email.view import email_view
 from apps.api_v1.organization.model import OrganizationTable
 from apps.api_v1.user.configuration import UserTokenStatus
 from apps.api_v1.user.model import UserTable
@@ -166,6 +170,26 @@ class AuthView(
         await db_session.commit()
         await db_session.refresh(instance=organization_record)
 
+        email_otp_response = await email_view.send_email_otp(
+            record=EmailBaseSchema(
+                subject=email_configuration.EMAIL_VERIFY_SUBJECT,
+                email_purpose=email_configuration.EMAIL_VERIFY_PURPOSE,
+                user_name=f"{record.first_name} {record.last_name}",
+                email=record.email,
+            )
+        )
+
+        if not email_otp_response.get("success"):
+            query: Delete = delete(OrganizationTable).where(
+                OrganizationTable.id == organization_record.id
+            )
+            await db_session.execute(statement=query)
+            await db_session.commit()
+
+            return {
+                "detail": email_response_message.EMAIL_SENT_FAILED,
+            }
+
         # Create Admin User
         user_record: UserTable = UserTable(
             first_name=record.first_name,
@@ -179,8 +203,7 @@ class AuthView(
             state=record.state,
             country=record.country,
             postal_code=record.postal_code,
-            email_verified=True,
-            is_active=True,
+            email_otp=email_otp_response.get("otp_code"),
             role_id=record.role_id,
             organization_id=organization_record.id,
         )

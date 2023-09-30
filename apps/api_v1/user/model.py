@@ -14,7 +14,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 # Importing Project Files
 from database import BaseTable
-from core.configuration import core_configuration
+from core import core_configuration
 from .configuration import UserTokenStatus
 from ..role.model import RoleTable
 from ..organization.model import OrganizationTable

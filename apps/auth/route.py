@@ -18,6 +18,7 @@ from fastapi.exceptions import HTTPException
 # Importing Project Files
 from database import get_session
 from core import CurrentUserReadSchema, get_current_active_user
+from apps.email.response_message import email_response_message
 from .response_message import auth_response_message
 from .schema import (
     RegisterAdminSchema,
@@ -106,9 +107,7 @@ async def register_admin_user(
         ):
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail={
-                    "detail": auth_response_message.ORGANIZATION_ALREADY_EXISTS
-                },
+                detail=auth_response_message.ORGANIZATION_ALREADY_EXISTS,
             )
 
         if (
@@ -117,15 +116,19 @@ async def register_admin_user(
         ):
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail={
-                    "detail": auth_response_message.USERNAME_ALREADY_EXISTS
-                },
+                detail=auth_response_message.USERNAME_ALREADY_EXISTS,
             )
 
         if result.get("detail") == auth_response_message.EMAIL_ALREADY_EXISTS:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,
-                detail={"detail": auth_response_message.EMAIL_ALREADY_EXISTS},
+                detail=auth_response_message.EMAIL_ALREADY_EXISTS,
+            )
+
+        if result.get("detail") == email_response_message.EMAIL_SENT_FAILED:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=email_response_message.EMAIL_SENT_FAILED,
             )
 
     return RegisterAdminReadSchema.model_validate(obj=result)
@@ -167,13 +170,13 @@ async def login(
         if result.get("detail") == auth_response_message.USER_NOT_FOUND:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail={"detail": auth_response_message.USER_NOT_FOUND},
+                detail=auth_response_message.USER_NOT_FOUND,
             )
 
         if result.get("detail") == auth_response_message.INCORRECT_PASSWORD:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
-                detail={"detail": auth_response_message.INCORRECT_PASSWORD},
+                detail=auth_response_message.INCORRECT_PASSWORD,
             )
 
     return LoginReadSchema.model_validate(obj=result)
@@ -212,7 +215,7 @@ async def refresh_token(
     if not isinstance(result, RefreshTokenReadSchema):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail={"detail": auth_response_message.USER_NOT_FOUND},
+            detail=auth_response_message.USER_NOT_FOUND,
         )
 
     return RefreshTokenReadSchema.model_validate(obj=result)
@@ -251,7 +254,7 @@ async def logout(
     if result.get("detail") == auth_response_message.USER_NOT_FOUND:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail={"detail": auth_response_message.USER_NOT_FOUND},
+            detail=auth_response_message.USER_NOT_FOUND,
         )
 
     return {"detail": auth_response_message.USER_LOGGED_OUT}

@@ -83,6 +83,7 @@ class CoreConfiguration(BaseSettings):
 
     ACCESS_TOKEN_SECRET_KEY: str = secrets.token_urlsafe(32)
     REFRESH_TOKEN_SECRET_KEY: str = secrets.token_urlsafe(32)
+    OTP_CODE_SECRET_KEY: str = secrets.token_urlsafe(32)
     ALGORITHM: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24  # 1 day
     REFRESH_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7  # 7 days
@@ -112,12 +113,15 @@ class CoreConfiguration(BaseSettings):
     EMAIL_FROM: str
     EMAIL_FROM_NAME: str
 
-    COMPANY_NAME: str = "Test Company"
-
-    # OPENAI
+    # OpenAI Configuration
 
     OPENAI_API_KEY: str
     MODEL_NAME: str = "gpt-3.5-turbo-16k"
+
+    # Client Configuration
+
+    CLIENT_BASE_URL: str
+    COMPANY_NAME: str
 
     # Settings Configuration
     model_config = SettingsConfigDict(env_file=".env")

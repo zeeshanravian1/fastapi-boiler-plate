@@ -297,15 +297,22 @@
 
                               <div style="line-height: 140%; text-align: left; word-wrap: break-word;">
                                 <p style="font-size: 14px; line-height: 140%;"><span
-                                    style="font-size: 18px; line-height: 25.2px; color: #666666;">Hello {{name}},</span>
+                                    style="font-size: 18px; line-height: 25.2px; color: #666666;">Hello
+                                    {{user_name}},</span>
                                 </p>
                                 <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
                                 <p style="font-size: 14px; line-height: 140%;"><span
                                     style="font-size: 18px; line-height: 25.2px; color: #666666;">We have sent you this
-                                    email in response to your request to {{msg_purpose}} on {{company_name}}.</span></p>
+                                    email in response to your request to {{email_purpose}} on {{company_name}}.</span>
+                                </p>
+                                <p style="font-size: 14px; line-height: 140%;"><span
+                                    style="font-size: 18px; line-height: 25.2px; color: #666666;">&nbsp;</span></p>
+                                <p style="font-size: 14px; line-height: 140%;"><span
+                                    style="font-size: 18px; line-height: 25.2px; color: #666666;">Your One Time Code is:
+                                    <strong>{{otp_code}}</strong>.</span></p>
                                 <p style="font-size: 14px; line-height: 140%;">&nbsp;</p>
                                 <p style="font-size: 14px; line-height: 140%;"><span
-                                    style="font-size: 18px; line-height: 25.2px; color: #666666;">To {{msg_purpose}},
+                                    style="font-size: 18px; line-height: 25.2px; color: #666666;">To {{email_purpose}},
                                     please follow the link below: </span></p>
                               </div>
 
@@ -327,7 +334,7 @@
                                 <a href={{url}} target="_blank"
                                   style="box-sizing: border-box;display: inline-block;font-family:'Lato',sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #03a9d1;    border-radius: 104px !important;-webkit-border-radius: 1px; -moz-border-radius: 1px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;">
                                   <span style="display:block;padding:15px 40px;line-height:120%;"><span
-                                      style="font-size: 18px; line-height: 21.6px;">{{msg_purpose}}</span></span>
+                                      style="font-size: 18px; line-height: 21.6px;">{{email_purpose}}</span></span>
                                 </a>
                                 <!--[if mso]></center></v:roundrect></td></tr></table><![endif]-->
                               </div>
@@ -402,7 +409,7 @@
                                   </span></p>
                                 <p style="font-size: 14px; line-height: 140%;"><span
                                     style="font-size: 14px; line-height: 19.6px; color: #ecf0f1;"> +92-300 1234567 |
-                                    CustomerCare@company.com </span></p>
+                                    CustomerCare@boilerplate.com </span></p>
                               </div>
 
                             </td>

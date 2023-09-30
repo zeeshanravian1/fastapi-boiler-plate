@@ -14,7 +14,7 @@ from sqlalchemy.orm import DeclarativeBase, declarative_base
 # Importing FastAPI Packages
 
 # Importing Project Files
-from core.configuration import core_configuration
+from core import core_configuration
 
 
 # -----------------------------------------------------------------------------
