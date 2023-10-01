@@ -14,12 +14,78 @@ from pydantic_settings import SettingsConfigDict
 
 # Importing Project Files
 from core import core_configuration
+from apps.auth.schema import LoginReadSchema
 from apps.api_v1.user.configuration import user_configuration
+from apps.api_v1.user.helper import lowercase_email
 from .configuration import email_configuration
-from .helper import lowercase_email
+from .response_message import email_response_message
 
 
 # -----------------------------------------------------------------------------
+
+
+class EmailVerifyRequestSchema(BaseModel):
+    """
+    Email Verify Request Schema
+
+    Description:
+    - This schema is used to validate email verify request data passed to API.
+
+    """
+
+    email: EmailStr = Field(example=email_configuration.EMAIL)
+    lowercase_email = validator("email", allow_reuse=True)(lowercase_email)
+
+    # Settings Configuration
+    model_config = SettingsConfigDict(
+        str_strip_whitespace=True, from_attributes=True
+    )
+
+
+class EmailSentSchema(BaseModel):
+    """
+    Email Sent Schema
+
+    Description:
+    - This schema is used to validate email sent data returned by API.
+
+    """
+
+    detail: str = Field(example=email_response_message.EMAIL_SENT)
+
+    # Settings Configuration
+    model_config = SettingsConfigDict(
+        str_strip_whitespace=True, from_attributes=True
+    )
+
+
+class EmailVerifySchema(BaseModel):
+    """
+    Email Verify Schema
+
+    Description:
+    - This schema is used to validate email verify token passed to API.
+
+    """
+
+    token: str = Field(example=email_configuration.OTP_CODE)
+
+    # Settings Configuration
+    model_config = SettingsConfigDict(
+        str_strip_whitespace=True, from_attributes=True
+    )
+
+
+class EmailVerifyReadSchema(LoginReadSchema):
+    """
+    Email Verify Read Schema
+
+    Description:
+    - This schema is used to validate email verify data returned by API.
+
+    """
+
+    detail: str = Field(example=email_response_message.EMAIL_VERIFIED)
 
 
 class EmailBaseSchema(BaseModel):

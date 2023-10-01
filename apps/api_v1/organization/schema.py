@@ -69,7 +69,7 @@ class OrganizationReadSchema(OrganizationCreateSchema, BaseReadSchema):
     Organization Read Schema
 
     Description:
-    - This schema is used to validate organization data returned from API.
+    - This schema is used to validate organization data returned by API.
 
     """
 

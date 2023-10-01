@@ -25,7 +25,7 @@ class BaseReadSchema(BaseModel):
     Base Read Schema
 
     Description:
-    - This schema is used to validate base data returned from API.
+    - This schema is used to validate base data returned by API.
 
     """
 
@@ -44,7 +44,7 @@ class BasePaginationReadSchema(BaseModel):
     Base Pagination Read Schema
 
     Description:
-    - This schema is used to validate base pagination data returned from API.
+    - This schema is used to validate base pagination data returned by API.
 
     """
 

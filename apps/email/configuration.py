@@ -34,7 +34,7 @@ class EmailConfiguration:
     EMAIL: str = "test@email.com"
     EMAIL_VERIFY_SUBJECT: str = f"Welcome to {core_configuration.COMPANY_NAME}"
     EMAIL_VERIFY_PURPOSE: str = "Verify Email"
-    EMAIL_PASSWORD_RESET_SUBJECT: str = "Complete your password reset request"
+    EMAIL_PASSWORD_RESET_SUBJECT: str = "Reset Password Request"
     EMAIL_PASSWORD_RESET_PURPOSE: str = "Reset Password"
 
 

@@ -8,7 +8,7 @@
 
 # Importing Python packages
 import logging
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from jose import jwt, JWTError
 from pydantic import ValidationError
 from sqlalchemy import select
@@ -23,8 +23,7 @@ from fastapi.security import OAuth2PasswordBearer
 
 # Importing from project files
 from database.session import get_session
-from core import core_configuration
-from apps.api_v1.user.configuration import UserTokenStatus
+from core import UserTokenStatus, core_configuration
 from apps.api_v1.user.model import UserTable
 from .configuration import TokenType
 from .schema import CurrentUserReadSchema
@@ -71,7 +70,9 @@ async def create_token(data: dict, token_type: TokenType) -> str:
         else core_configuration.REFRESH_TOKEN_SECRET_KEY
     )
 
-    expire: datetime = datetime.utcnow() + timedelta(minutes=expire_minutes)
+    expire: datetime = datetime.now(tz=timezone.utc) + timedelta(
+        minutes=expire_minutes
+    )
     to_encode.update({"exp": expire})
 
     return jwt.encode(
@@ -148,31 +149,31 @@ async def get_current_user(
             headers={"WWW-Authenticate": authenticate_value},
         )
 
-    current_user: CurrentUserReadSchema = CurrentUserReadSchema(
-        id=user_data.id,
-        first_name=user_data.first_name,
-        last_name=user_data.last_name,
-        contact=user_data.contact,
-        username=user_data.username,
-        email=user_data.email,
-        address=user_data.address,
-        city=user_data.city,
-        state=user_data.state,
-        country=user_data.country,
-        postal_code=user_data.postal_code,
-        role_id=user_data.role_id,
-        role_name=user_data.user_role.role_name,
-        is_active=user_data.is_active,
-        token_status=user_data.token_status,
-        created_at=user_data.created_at,
-        updated_at=user_data.updated_at,
-    )
+    current_user: dict = {
+        "id": user_data.id,
+        "first_name": user_data.first_name,
+        "last_name": user_data.last_name,
+        "contact": user_data.contact,
+        "username": user_data.username,
+        "email": user_data.email,
+        "address": user_data.address,
+        "city": user_data.city,
+        "state": user_data.state,
+        "country": user_data.country,
+        "postal_code": user_data.postal_code,
+        "role_id": user_data.role_id,
+        "role_name": user_data.user_role.role_name,
+        "is_active": user_data.is_active,
+        "token_status": user_data.token_status,
+        "created_at": user_data.created_at,
+        "updated_at": user_data.updated_at,
+    }
 
     if user_data.user_role.role_name == core_configuration.SUPERUSER_ROLE:
-        return current_user
+        return CurrentUserReadSchema.model_validate(obj=current_user)
 
     return CurrentUserReadSchema(
-        **current_user.model_dump(),
+        **current_user,
         organization_id=user_data.organization_id,
         organization_name=user_data.user_organization.organization_name
     )

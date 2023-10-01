@@ -6,7 +6,7 @@
 
 """
 
-from .configuration import TokenType, core_configuration
+from .configuration import UserTokenStatus, TokenType, core_configuration
 from .schema import CurrentUserReadSchema
 from .security import create_token, get_current_active_user
 from .helper import custom_generate_unique_id

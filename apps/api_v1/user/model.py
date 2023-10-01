@@ -14,8 +14,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 # Importing Project Files
 from database import BaseTable
-from core import core_configuration
-from .configuration import UserTokenStatus
+from core import UserTokenStatus, core_configuration
 from ..role.model import RoleTable
 from ..organization.model import OrganizationTable
 
@@ -49,7 +48,6 @@ class UserTable(BaseTable):
     email_otp: Mapped[str] = mapped_column(String(2_55), nullable=True)
     email_verified: Mapped[bool] = mapped_column(Boolean, default=False)
     password_otp: Mapped[str] = mapped_column(String(2_55), nullable=True)
-    password_verified: Mapped[bool] = mapped_column(Boolean, nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=False)
     token_status: Mapped[str] = mapped_column(
         Enum(UserTokenStatus, schema=core_configuration.DB_SCHEMA),

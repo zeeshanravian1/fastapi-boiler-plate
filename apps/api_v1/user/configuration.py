@@ -7,7 +7,6 @@
 """
 
 # Importing Python Packages
-from enum import Enum
 
 # Importing FastAPI Packages
 
@@ -42,19 +41,7 @@ class UserConfiguration:
     IS_ACTIVE: bool = True
     USER_COLUMN_USERNAME: str = "username"
     USER_COLUMN_EMAIL: str = "email"
-
-
-class UserTokenStatus(str, Enum):
-    """
-    User Token Status Enum
-
-    Description:
-    - This enum is used to define user token status.
-
-    """
-
-    LOGIN: str = "login"
-    LOGOUT: str = "logout"
+    OTP_CODE: str = "123456"
 
 
 user_configuration = UserConfiguration()

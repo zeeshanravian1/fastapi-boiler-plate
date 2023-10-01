@@ -13,8 +13,10 @@ from pydantic_settings import SettingsConfigDict
 # Importing FastAPI Packages
 
 # Importing Project Files
+from core import UserTokenStatus
 from apps.base import BaseReadSchema, BasePaginationReadSchema
-from .configuration import user_configuration, UserTokenStatus
+from .configuration import user_configuration
+from .response_message import user_response_message
 from .helper import (
     names_validator,
     contact_validator,
@@ -169,7 +171,7 @@ class UserReadSchema(UserBaseSchema, BaseReadSchema):
     User Read Schema
 
     Description:
-    - This schema is used to validate user data returned from API.
+    - This schema is used to validate user data returned by API.
 
     """
 
@@ -182,7 +184,7 @@ class UserPaginationReadSchema(BasePaginationReadSchema):
     User Pagination Read Schema
 
     Description:
-    - This schema is used to validate user pagination data returned from API.
+    - This schema is used to validate user pagination data returned by API.
 
     """
 
@@ -260,6 +262,80 @@ class PasswordChangeSchema(BaseModel):
     new_password_validator = validator("new_password", allow_reuse=True)(
         password_validator
     )
+
+    # Settings Configuration
+    model_config = SettingsConfigDict(
+        str_strip_whitespace=True, from_attributes=True
+    )
+
+
+class PasswordChangeReadSchema(BaseModel):
+    """
+    Change Password Read Schema
+
+    Description:
+    - This schema is used to validate change password data returned by API.
+
+    """
+
+    detail: str = Field(example=user_response_message.PASSWORD_CHANGED)
+
+    # Settings Configuration
+    model_config = SettingsConfigDict(
+        str_strip_whitespace=True, from_attributes=True
+    )
+
+
+class PasswordResetRequestSchema(BaseModel):
+    """
+    Password Reset Request Schema
+
+    Description:
+    - This schema is used to validate password reset request data passed to
+    API.
+
+    """
+
+    email: EmailStr = Field(
+        min_length=1,
+        max_length=2_55,
+        example=user_configuration.EMAIL,
+    )
+    email_validator = validator("email", allow_reuse=True)(lowercase_email)
+
+    # Settings Configuration
+    model_config = SettingsConfigDict(
+        str_strip_whitespace=True, from_attributes=True
+    )
+
+
+class PasswordResetSchema(BaseModel):
+    """
+    Password Reset Schema
+
+    Description:
+    - This schema is used to validate password reset data passed to API.
+
+    """
+
+    token: str = Field(example=user_configuration.OTP_CODE)
+
+    # Settings Configuration
+    model_config = SettingsConfigDict(
+        str_strip_whitespace=True, from_attributes=True
+    )
+
+
+class PasswordResetReadSchema(BaseModel):
+    """
+    Password Reset Read Schema
+
+    Description:
+    - This schema is used to validate password reset data returned by API.
+
+    """
+
+    detail: str = Field(example=user_response_message.PASSWORD_RESET)
 
     # Settings Configuration
     model_config = SettingsConfigDict(

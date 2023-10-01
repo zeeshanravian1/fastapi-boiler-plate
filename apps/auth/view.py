@@ -19,14 +19,13 @@ from sqlalchemy.sql.dml import Update, Delete
 from fastapi.security import OAuth2PasswordRequestForm
 
 # Importing Project Files
-from core import TokenType, core_configuration, create_token
+from core import UserTokenStatus, TokenType, core_configuration, create_token
 from apps.base import BaseView
 from apps.email.configuration import email_configuration
 from apps.email.response_message import email_response_message
+from apps.email.helper import send_email_otp
 from apps.email.schema import EmailBaseSchema
-from apps.email.view import email_view
 from apps.api_v1.organization.model import OrganizationTable
-from apps.api_v1.user.configuration import UserTokenStatus
 from apps.api_v1.user.model import UserTable
 from apps.api_v1.user.schema import UserCreateSchema, UserUpdateSchema
 from .configuration import auth_configuration
@@ -170,7 +169,7 @@ class AuthView(
         await db_session.commit()
         await db_session.refresh(instance=organization_record)
 
-        email_otp_response = await email_view.send_email_otp(
+        email_otp_response = await send_email_otp(
             record=EmailBaseSchema(
                 subject=email_configuration.EMAIL_VERIFY_SUBJECT,
                 email_purpose=email_configuration.EMAIL_VERIFY_PURPOSE,

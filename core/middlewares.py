@@ -47,22 +47,19 @@ async def exception_handling(request: Request, call_next):
     try:
         response: Response = await call_next(request)
 
-    except ExpiredSignatureError as err:
-        exception_logger.exception(msg=err)
+    except ExpiredSignatureError:
         return JSONResponse(
             status_code=status.HTTP_401_UNAUTHORIZED,
             content={"detail": core_response_message.TOKEN_EXPIRED},
         )
 
-    except JWTError as err:
-        exception_logger.exception(msg=err)
+    except JWTError:
         return JSONResponse(
             status_code=status.HTTP_401_UNAUTHORIZED,
             content={"detail": core_response_message.INVALID_TOKEN},
         )
 
     except IntegrityError as err:
-        exception_logger.exception(msg=err)
         err_message: str = (
             str(err.orig)
             .split("DETAIL:")[1]
@@ -89,6 +86,7 @@ async def exception_handling(request: Request, call_next):
             detail = core_response_message.UNIQUE_VIOLATION + str(err_message)
 
         else:
+            exception_logger.exception(msg=err)
             detail = core_response_message.INTEGRITY_ERROR
 
         return JSONResponse(

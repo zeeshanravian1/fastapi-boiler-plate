@@ -127,6 +127,21 @@ class CoreConfiguration(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env")
 
 
+class UserTokenStatus(str, Enum):
+    """
+    User Token Status Enum
+
+    Description:
+    - This enum is used to define user token status.
+
+    """
+
+    LOGIN: str = "login"
+    LOGOUT: str = "logout"
+    EMAIL_VERIFY: str = "email_verify"
+    PASSWORD_RESET: str = "password_reset"
+
+
 class TokenType(str, Enum):
     """
     Token Type Enum

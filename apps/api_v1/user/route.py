@@ -18,6 +18,8 @@ from fastapi.exceptions import HTTPException
 # Importing Project Files
 from database import get_session
 from core import CurrentUserReadSchema, get_current_active_user
+from apps.email.response_message import email_response_message
+from apps.email.schema import EmailSentSchema
 from .configuration import user_configuration
 from .response_message import user_response_message
 from .model import UserTable
@@ -28,6 +30,10 @@ from .schema import (
     UserUpdateSchema,
     UserPartialUpdateSchema,
     PasswordChangeSchema,
+    PasswordChangeReadSchema,
+    PasswordResetRequestSchema,
+    PasswordResetSchema,
+    PasswordResetReadSchema,
 )
 from .view import user_view
 
@@ -505,26 +511,24 @@ async def delete_user(
 
 
 # Change password of a single user route
-@router.patch(
-    path="/change-password/{user_id}/",
+@router.post(
+    path="/change-password/",
     status_code=status.HTTP_202_ACCEPTED,
-    summary="Change password of a single user by providing id",
+    summary="Change password of a single user",
     response_description="Password changed successfully",
 )
-async def change_password(
-    user_id: int,
+async def password_change(
     record: PasswordChangeSchema,
     db_session: AsyncSession = Depends(get_session),
     current_user: CurrentUserReadSchema = Security(get_current_active_user),
-) -> dict:
+) -> PasswordChangeReadSchema:
     """
     Change password of a single user
 
     Description:
-    - This route is used to change password of a single user by providing id.
+    - This route is used to change password of a single user.
 
     Parameter:
-    - **user_id** (INT): ID of user to change password. **(Required)**
     - **old_password** (STR): Old password of user. **(Required)**
     - **new_password** (STR): New password of user. **(Required)**
 
@@ -532,10 +536,10 @@ async def change_password(
     - **detail** (STR): Password changed successfully.
 
     """
-    print("Calling change_password method")
+    print("Calling password_change method")
 
-    result: UserTable = await user_view.change_password(
-        db_session=db_session, record_id=user_id, record=record
+    result: UserTable = await user_view.password_change(
+        db_session=db_session, record_id=current_user.id, record=record
     )
 
     if result.get("detail") == user_response_message.USER_NOT_FOUND:
@@ -550,4 +554,97 @@ async def change_password(
             detail=user_response_message.INCORRECT_PASSWORD,
         )
 
-    return {"detail": user_response_message.PASSWORD_CHANGED}
+    return PasswordChangeReadSchema.model_validate(obj=result)
+
+
+# Password reset request route
+@router.post(
+    path="/password-reset-request/",
+    status_code=status.HTTP_200_OK,
+    summary="Request password reset",
+    response_description=email_response_message.EMAIL_SENT,
+)
+async def password_reset_request(
+    record: PasswordResetRequestSchema,
+    db_session: AsyncSession = Depends(get_session),
+) -> EmailSentSchema:
+    """
+    Password Reset Request
+
+    Description:
+    - This route is used to request password reset.
+
+    Parameter:
+    Request password reset details with following fields:
+    - **email** (STR): Email of user to be verified. **(Required)**
+
+    Return:
+    - **detail** (STR): Email sent successfully at given email address.
+
+    """
+    print("Calling password_reset_request method")
+
+    result: dict = await user_view.password_reset_request(
+        db_session=db_session, record=record
+    )
+
+    if result.get("detail") == user_response_message.USER_NOT_FOUND:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=user_response_message.USER_NOT_FOUND,
+        )
+
+    if result.get("detail") == email_response_message.EMAIL_SENT_FAILED:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail=email_response_message.EMAIL_SENT_FAILED,
+        )
+
+    return EmailSentSchema.model_validate(obj=result)
+
+
+# Password reset route
+@router.post(
+    path="/password-reset/",
+    status_code=status.HTTP_200_OK,
+    summary="Password reset",
+    response_description=user_response_message.PASSWORD_RESET,
+)
+async def password_reset(
+    record: PasswordResetSchema,
+    db_session: AsyncSession = Depends(get_session),
+) -> PasswordResetReadSchema:
+    """
+    Reset Password
+
+    Description:
+    - This route is used to reset password.
+
+    Parameter:
+    Reset password details with following fields:
+    - **token** (STR): Password reset token. **(Required)**
+
+    Return:
+    - **detail** (STR): Reset password status.
+
+    """
+    print("Calling password_reset method")
+
+    result: PasswordResetReadSchema = await user_view.password_reset(
+        db_session=db_session, record=record
+    )
+
+    if not isinstance(result, PasswordResetReadSchema):
+        if result.get("detail") == user_response_message.USER_NOT_FOUND:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail=user_response_message.USER_NOT_FOUND,
+            )
+
+        if result.get("detail") == email_response_message.INCORRECT_OTP_CODE:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=email_response_message.INCORRECT_OTP_CODE,
+            )
+
+    return PasswordChangeReadSchema.model_validate(obj=result)

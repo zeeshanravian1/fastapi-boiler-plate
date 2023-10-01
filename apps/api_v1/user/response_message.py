@@ -30,6 +30,7 @@ class UserResponseMessage:
 
     PASSWORD_CHANGED: str = "Password changed successfully"
     INCORRECT_PASSWORD: str = "Incorrect password"
+    PASSWORD_RESET: str = "Password reset successfully"
 
 
 user_response_message = UserResponseMessage()

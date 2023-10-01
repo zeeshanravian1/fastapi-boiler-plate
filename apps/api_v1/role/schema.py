@@ -67,7 +67,7 @@ class RoleReadSchema(RoleCreateSchema, BaseReadSchema):
     Role Read Schema
 
     Description:
-    - This schema is used to validate role data returned from API.
+    - This schema is used to validate role data returned by API.
 
     """
 
@@ -77,7 +77,7 @@ class RolePaginationReadSchema(BasePaginationReadSchema):
     Role Pagination Read Schema
 
     Description:
-    - This schema is used to validate role pagination data returned from API.
+    - This schema is used to validate role pagination data returned by API.
 
     """
 

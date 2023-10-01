@@ -20,7 +20,7 @@ passlib = "^1.7.4"
 autopep8 = "^2.0.4"
 black = "^23.9.1"
 ipykernel = "^6.25.2"
-pylint = "^2.17.6"
+pylint = "^2.17.7"
 
 [build-system]
 requires = ["poetry-core"]

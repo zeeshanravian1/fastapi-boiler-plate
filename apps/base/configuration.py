@@ -7,7 +7,7 @@
 """
 
 # Importing Python Packages
-from datetime import datetime
+from datetime import datetime, timezone
 
 # Importing FastAPI Packages
 
@@ -27,8 +27,8 @@ class BaseConfiguration:
     """
 
     ID: int = 1
-    CREATED_AT: datetime = datetime.utcnow()
-    UPDATED_AT: datetime = datetime.utcnow()
+    CREATED_AT: datetime = datetime.now(tz=timezone.utc)
+    UPDATED_AT: datetime = datetime.now(tz=timezone.utc)
 
     TOTAL_RECORDS: int = 1
     TOTAL_PAGES: int = 1
