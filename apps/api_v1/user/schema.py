@@ -7,7 +7,7 @@
 """
 
 # Importing Python Packages
-from pydantic import BaseModel, EmailStr, Field, validator
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from pydantic_settings import SettingsConfigDict
 
 # Importing FastAPI Packages
@@ -44,17 +44,11 @@ class UserBaseSchema(BaseModel):
         max_length=2_55,
         example=user_configuration.FIRST_NAME,
     )
-    first_name_validator = validator("first_name", allow_reuse=True)(
-        names_validator
-    )
     last_name: str | None = Field(
         default=None,
         min_length=1,
         max_length=2_55,
         example=user_configuration.LAST_NAME,
-    )
-    last_name_validator = validator("last_name", allow_reuse=True)(
-        names_validator
     )
     contact: str | None = Field(
         default=None,
@@ -62,17 +56,11 @@ class UserBaseSchema(BaseModel):
         max_length=2_55,
         example=user_configuration.CONTACT,
     )
-    contact_validator = validator("contact", allow_reuse=True)(
-        contact_validator
-    )
     username: str | None = Field(
         default=None,
         min_length=1,
         max_length=2_55,
         example=user_configuration.USERNAME,
-    )
-    username_validator = validator("username", allow_reuse=True)(
-        username_validator
     )
     email: EmailStr | None = Field(
         default=None,
@@ -80,7 +68,6 @@ class UserBaseSchema(BaseModel):
         max_length=2_55,
         example=user_configuration.EMAIL,
     )
-    email_validator = validator("email", allow_reuse=True)(lowercase_email)
     address: str | None = Field(
         default=None,
         min_length=1,
@@ -116,6 +103,13 @@ class UserBaseSchema(BaseModel):
         ge=1,
         example=user_configuration.ROLE_ID,
     )
+
+    # Custom Validators
+    first_name_validator = field_validator("first_name")(names_validator)
+    last_name_validator = field_validator("last_name")(names_validator)
+    contact_validator = field_validator("contact")(contact_validator)
+    username_validator = field_validator("username")(username_validator)
+    email_validator = field_validator("email")(lowercase_email)
 
     # Settings Configuration
     model_config = SettingsConfigDict(
@@ -157,13 +151,13 @@ class UserCreateSchema(UserBaseSchema):
         max_length=1_00,
         example=user_configuration.PASSWORD,
     )
-    password_validator = validator("password", allow_reuse=True)(
-        password_validator
-    )
     role_id: int = Field(
         ge=1,
         example=user_configuration.ROLE_ID,
     )
+
+    # Custom Validators
+    password_validator = field_validator("password")(password_validator)
 
 
 class UserReadSchema(UserBaseSchema, BaseReadSchema):
@@ -253,13 +247,15 @@ class PasswordChangeSchema(BaseModel):
     old_password: str = Field(
         min_length=8, max_length=1_00, example=user_configuration.PASSWORD
     )
-    old_password_validator = validator("old_password", allow_reuse=True)(
-        password_validator
-    )
     new_password: str = Field(
         min_length=8, max_length=1_00, example=user_configuration.PASSWORD
     )
-    new_password_validator = validator("new_password", allow_reuse=True)(
+
+    # Custom Validators
+    old_password_validator = field_validator("old_password")(
+        password_validator
+    )
+    new_password_validator = field_validator("new_password")(
         password_validator
     )
 
@@ -301,7 +297,9 @@ class PasswordResetRequestSchema(BaseModel):
         max_length=2_55,
         example=user_configuration.EMAIL,
     )
-    email_validator = validator("email", allow_reuse=True)(lowercase_email)
+
+    # Custom Validators
+    email_validator = field_validator("email")(lowercase_email)
 
     # Settings Configuration
     model_config = SettingsConfigDict(

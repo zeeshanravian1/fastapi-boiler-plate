@@ -7,7 +7,7 @@
 """
 
 # Importing Python Packages
-from pydantic import BaseModel, Field, EmailStr, validator
+from pydantic import BaseModel, Field, EmailStr, field_validator
 from pydantic_settings import SettingsConfigDict
 
 # Importing FastAPI Packages
@@ -34,7 +34,9 @@ class EmailVerifyRequestSchema(BaseModel):
     """
 
     email: EmailStr = Field(example=email_configuration.EMAIL)
-    lowercase_email = validator("email", allow_reuse=True)(lowercase_email)
+
+    # Custom Validators
+    lowercase_email = field_validator("email")(lowercase_email)
 
     # Settings Configuration
     model_config = SettingsConfigDict(
@@ -103,7 +105,9 @@ class EmailBaseSchema(BaseModel):
     )
     user_name: str = Field(example=user_configuration.FULL_NAME)
     email: EmailStr = Field(example=email_configuration.EMAIL)
-    email_validator = validator("email", allow_reuse=True)(lowercase_email)
+
+    # Custom Validators
+    email_validator = field_validator("email")(lowercase_email)
 
     # Settings Configuration
     model_config = SettingsConfigDict(

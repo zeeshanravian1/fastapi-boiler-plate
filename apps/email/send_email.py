@@ -1,8 +1,8 @@
 """
-    Email Pydantic Validators
+    Send Email Module
 
     Description:
-    - This module contains validators for email pydantic schemas.
+    - This module is used to send email to user.
 
 """
 
