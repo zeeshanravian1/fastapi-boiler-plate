@@ -25,7 +25,7 @@ class RoleConfiguration:
 
     """
 
-    ROLE: str = "admin"
+    ROLE_NAME: str = "admin"
     ROLE_DESCRIPTION: str = "Admin Role Description"
     ROLE_COLUMN_NAME: str = "role_name"
 

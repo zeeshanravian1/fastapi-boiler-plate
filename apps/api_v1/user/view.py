@@ -18,10 +18,12 @@ from sqlalchemy.sql.dml import Update
 # Importing Project Files
 from core import UserTokenStatus, core_configuration
 from apps.base import BaseView
-from apps.email.configuration import email_configuration
-from apps.email.response_message import email_response_message
-from apps.email.helper import send_email_otp
-from apps.email.schema import EmailBaseSchema
+from apps.email import (
+    EmailBaseSchema,
+    email_configuration,
+    email_response_message,
+    send_email_otp,
+)
 from .configuration import user_configuration
 from .response_message import user_response_message
 from .model import UserTable

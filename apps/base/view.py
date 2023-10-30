@@ -71,7 +71,7 @@ class BaseView(
         - This method is responsible for creating a single record.
 
         Parameter:
-        - **db_session** (Session): Database session. **(Required)**
+        - **db_session** (AsyncSession): Database session. **(Required)**
         - **record** (CreateSchema): Create Schema. **(Required)**
 
         Return:
@@ -96,7 +96,7 @@ class BaseView(
         - This method is responsible for reading a single record by ID.
 
         Parameter:
-        - **db_session** (Session): Database session. **(Required)**
+        - **db_session** (AsyncSession): Database session. **(Required)**
         - **record_id** (int): Record ID. **(Required)**
 
         Return:
@@ -120,7 +120,7 @@ class BaseView(
         - This method is responsible for reading a single record by value.
 
         Parameter:
-        - **db_session** (Session): Database session. **(Required)**
+        - **db_session** (AsyncSession): Database session. **(Required)**
         - **column_name** (str): Column name. **(Required)**
         - **column_value** (str): Column value. **(Required)**
 
@@ -150,7 +150,7 @@ class BaseView(
         - This method is responsible for reading all records.
 
         Parameter:
-        - **db_session** (Session): Database session. **(Required)**
+        - **db_session** (AsyncSession): Database session. **(Required)**
         - **page** (int): Page number. **(Optional)**
         - **limit** (int): Limit number. **(Optional)**
 
@@ -206,7 +206,7 @@ class BaseView(
         - This method is responsible for updating a single record.
 
         Parameter:
-        - **db_session** (Session): Database session. **(Required)**
+        - **db_session** (AsyncSession): Database session. **(Required)**
         - **record_id** (int): Record ID. **(Required)**
         - **record** (UpdateSchema): Update Schema. **(Required)**
 
@@ -235,7 +235,7 @@ class BaseView(
         - This method is responsible for deleting a single record.
 
         Parameter:
-        - **db_session** (Session): Database session. **(Required)**
+        - **db_session** (AsyncSession): Database session. **(Required)**
         - **record_id** (int): Record ID. **(Required)**
 
         Return:

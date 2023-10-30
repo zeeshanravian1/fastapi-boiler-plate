@@ -30,7 +30,7 @@ class CurrentUserReadSchema(UserReadSchema):
 
     """
 
-    role_name: str = Field(example=role_configuration.ROLE)
+    role_name: str = Field(example=role_configuration.ROLE_NAME)
     organization_id: int | None = Field(
         default=None, example=base_configuration.ID
     )

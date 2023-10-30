@@ -72,8 +72,8 @@ async def insert_db_data(db_session: async_sessionmaker[AsyncSession]) -> None:
                 session.add_all(instances=roles)
                 await session.commit()
 
-    except (IntegrityError, ProgrammingError):
-        insert_logger.error("Error in insert roles in database", exc_info=True)
+    except (IntegrityError, ProgrammingError) as err:
+        insert_logger.exception(msg=err)
 
     # Insert Super Admin in database
     try:
@@ -88,31 +88,29 @@ async def insert_db_data(db_session: async_sessionmaker[AsyncSession]) -> None:
                 )
                 role: RoleTable = result.scalars().first()
 
-                # Insert Super Admin
-                session.add(
-                    instance=UserTable(
-                        first_name=core_configuration.SUPERUSER_FIRST_NAME,
-                        last_name=core_configuration.SUPERUSER_LAST_NAME,
-                        contact=core_configuration.SUPERUSER_CONTACT,
-                        username=core_configuration.SUPERUSER_USERNAME,
-                        email=core_configuration.SUPERUSER_EMAIL,
-                        password=pbkdf2_sha256.hash(
-                            core_configuration.SUPERUSER_PASSWORD
-                        ),
-                        address=core_configuration.SUPERUSER_ADDRESS,
-                        city=core_configuration.SUPERUSER_CITY,
-                        state=core_configuration.SUPERUSER_STATE,
-                        country=core_configuration.SUPERUSER_COUNTRY,
-                        postal_code=core_configuration.SUPERUSER_POSTAL_CODE,
-                        email_verified=True,
-                        is_active=True,
-                        role_id=role.id,
-                    )
+                super_user = UserTable(
+                    first_name=core_configuration.SUPERUSER_FIRST_NAME,
+                    last_name=core_configuration.SUPERUSER_LAST_NAME,
+                    contact=core_configuration.SUPERUSER_CONTACT,
+                    username=core_configuration.SUPERUSER_USERNAME,
+                    email=core_configuration.SUPERUSER_EMAIL,
+                    password=pbkdf2_sha256.hash(
+                        core_configuration.SUPERUSER_PASSWORD
+                    ),
+                    address=core_configuration.SUPERUSER_ADDRESS,
+                    city=core_configuration.SUPERUSER_CITY,
+                    state=core_configuration.SUPERUSER_STATE,
+                    country=core_configuration.SUPERUSER_COUNTRY,
+                    postal_code=core_configuration.SUPERUSER_POSTAL_CODE,
+                    email_verified=True,
+                    is_active=True,
+                    role_id=role.id,
                 )
+
+                # Insert Super Admin
+                session.add(instance=super_user)
 
                 await session.commit()
 
-    except (IntegrityError, ProgrammingError):
-        insert_logger.error(
-            "Error in insert super admin in database", exc_info=True
-        )
+    except (IntegrityError, ProgrammingError) as err:
+        insert_logger.exception(msg=err)

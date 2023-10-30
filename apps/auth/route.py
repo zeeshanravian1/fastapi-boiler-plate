@@ -18,7 +18,7 @@ from fastapi.exceptions import HTTPException
 # Importing Project Files
 from database import get_session
 from core import CurrentUserReadSchema, get_current_active_user
-from apps.email.response_message import email_response_message
+from apps.email import email_response_message
 from .response_message import auth_response_message
 from .schema import (
     RegisterAdminSchema,

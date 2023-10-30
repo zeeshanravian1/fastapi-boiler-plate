@@ -33,7 +33,7 @@ class RoleBaseSchema(BaseModel):
         default=None,
         min_length=1,
         max_length=2_55,
-        example=role_configuration.ROLE,
+        example=role_configuration.ROLE_NAME,
     )
     role_description: str | None = Field(
         default=None,
@@ -58,7 +58,7 @@ class RoleCreateSchema(RoleBaseSchema):
     """
 
     role_name: str = Field(
-        min_length=1, max_length=2_55, example=role_configuration.ROLE
+        min_length=1, max_length=2_55, example=role_configuration.ROLE_NAME
     )
 
 

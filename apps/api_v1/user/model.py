@@ -54,16 +54,16 @@ class UserTable(BaseTable):
         default=UserTokenStatus.LOGOUT,
     )
     role_id: Mapped[int] = mapped_column(
-        ForeignKey(RoleTable.id, ondelete="CASCADE")
+        ForeignKey(RoleTable.id, ondelete="RESTRICT")
     )
     organization_id: Mapped[int | None] = mapped_column(
-        ForeignKey(OrganizationTable.id, ondelete="CASCADE")
+        ForeignKey(OrganizationTable.id, ondelete="RESTRICT")
     )
 
     # Relationship
     user_role: Mapped[RoleTable] = relationship(
-        back_populates="role_user", lazy="joined"
+        back_populates="role_user", lazy="subquery"
     )
     user_organization: Mapped[OrganizationTable | None] = relationship(
-        back_populates="organization_user", lazy="joined"
+        back_populates="organization_user", lazy="subquery"
     )
